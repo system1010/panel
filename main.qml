@@ -31,16 +31,16 @@ Window {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: "green"
-            text: "Hello, world!"
+            text: "Browser"
 
-            onClicked: messageDialog.visible = true;
+            onClicked: SingletonClass.getMessage(SingletonClass.Debug);
         }
 
         MyButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: "blue"
-            text: "Some button"
+            text: "Terminal"
             onClicked: SingletonClass.getMessage(SingletonClass.Info);
         }
 

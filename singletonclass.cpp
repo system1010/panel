@@ -12,7 +12,7 @@ QProcess process;
 if(message==Message::Info){
     process.startDetached("xterm");
 }else if(message==Message::Debug){
-    process.startDetached("xterm");
+    process.startDetached("quicknanobrowser");
 }else if(message==Message::Warning){
     process.startDetached("xterm");
 }else if(message==Message::Error){
