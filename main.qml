@@ -1,7 +1,8 @@
-import QtQuick 2.9
+import QtQuick 2.3
 import QtQuick.Window 2.2
-
+//Будем использовать вертикальный лейаут
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
 
 Window {
     visible: true
@@ -26,17 +27,30 @@ Window {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: "green"
+            text: "Hello, world!"
+
+            onClicked: messageDialog.visible = true;
         }
 
         MyButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: "blue"
+            text: "Some button"
         }
 
         MyButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
+            text: "Quit"
+
+            onClicked: Qt.quit()
         }
+    }
+
+    MessageDialog {
+        id: messageDialog
+        title: "Qt"
+        text: "Hello, world!"
     }
 }
