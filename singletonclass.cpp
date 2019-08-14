@@ -8,9 +8,18 @@ SingletonClass::SingletonClass(QObject *parent) : QObject(parent)
 
 QString SingletonClass::getMessage(SingletonClass::Message message)
 {
-    QProcess process;
+QProcess process;
+if(message==Message::Info){
     process.startDetached("xterm");
-    switch (message)
+}else if(message==Message::Debug){
+    process.startDetached("xterm");
+}else if(message==Message::Warning){
+    process.startDetached("xterm");
+}else if(message==Message::Error){
+    process.startDetached("xterm");
+}
+
+/*    switch (message)
     {
         case Message::Info:
             return "This is Info Message";
@@ -22,5 +31,6 @@ QString SingletonClass::getMessage(SingletonClass::Message message)
             return "This is Error Message";
         default:
             return "Nothin not found";
-    }
+     }
+*/
 }

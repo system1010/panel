@@ -1,13 +1,17 @@
-import QtQuick 2.0
+import QtQuick 2.3
 import QtQuick.Layouts 1.1
 
 Rectangle {
     id: mybutton
 
-    //Добавляем к кнопке свойство text,
+    //Добавляем к кнопку свойство text,
     //в которое можно будет что-нибудь записать.
     //Это будет текст нашей кнопки
     property string text
+
+    //Добавляем сигнал, который будет вызываться,
+    //когда пользователь нажал на кнопку
+    signal clicked
 
     color: "yellow"
     radius: 5
@@ -27,5 +31,10 @@ Rectangle {
         //По центру кнопки
         anchors.centerIn: parent
         text: mybutton.text
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: mybutton.clicked()
     }
 }
