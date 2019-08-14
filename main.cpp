@@ -1,16 +1,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtQml> // Include QtQml to use qmlRegisterType
+#include <QtQml>
 
-#include "info.h" // Connect the header file of the Info class
+#include "singletonclass.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<Info>("info", 1, 0, "Info"); // Register this class as a module
+    qmlRegisterSingletonType<SingletonClass>("SingletonClass", 1, 0, "SingletonClass", singletonProvider);
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
