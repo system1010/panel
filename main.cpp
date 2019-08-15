@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
-
+#include <QObject>
 #include "singletonclass.h"
 
 int main(int argc, char *argv[])

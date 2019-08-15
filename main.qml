@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 
 Window {
     visible: true
-    height: 200
+    height: 300
     width: 100
     //Этот лейаут расположит все дочерние
     //элементы по вертикали друг над другом
@@ -30,7 +30,7 @@ Window {
             //пространство лейаута между собой
             Layout.fillHeight: true
             Layout.fillWidth: true
-            color: "green"
+            color: "grey"
             text: "Browser"
 
             onClicked: SingletonClass.getMessage(SingletonClass.Debug);
@@ -39,7 +39,7 @@ Window {
         MyButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            color: "blue"
+            color: "grey"
             text: "Terminal"
             onClicked: SingletonClass.getMessage(SingletonClass.Info);
         }
@@ -47,8 +47,16 @@ Window {
         MyButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            text: "Quit"
-            onClicked: Qt.quit()
+            color: "gray"
+            text: "QtCreator"
+            onClicked: SingletonClass.getMessage(SingletonClass.Error);
+        }
+        MyButton {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            color: "red"
+            text: "Off"
+            onClicked: SingletonClass.getMessage(SingletonClass.Warning);
         }
     }
 
