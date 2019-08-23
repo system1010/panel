@@ -1,7 +1,8 @@
-#ifndef QOBJECT_H
-#define QOBJECT_H
-
+//#ifndef QOBJECT_H
+//#define QOBJECT_H
+#include <QApplication>
 #include <QObject>
+#include "nativeeventfilter.h"
 
 class qobject : public QObject
 {
@@ -12,6 +13,10 @@ public:
 signals:
 
 public slots:
+
+private:
+    NativeEventFilter *nativeEventFilter;
+
 };
 
-#endif // QOBJECT_H
+//#endif // QOBJECT_H
