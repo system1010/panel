@@ -5,8 +5,13 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += x11extras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG    += c++11
+CONFIG    += link_pkgconfig
+PKGCONFIG += x11
 
 TARGET = panel
 TEMPLATE = app
@@ -27,13 +32,20 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     label.cpp \
-    button.cpp
+    button.cpp \
+    qobject.cpp \
+    nativeeventfilter.cpp
 
 HEADERS += \
     label.h \
-    button.h
+    button.h \
+    qobject.h \
+    nativeeventfilter.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    tinywm
