@@ -12,6 +12,8 @@ public:
 
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
     void setShortcut();
+    void setShortcut1();
+
     void unsetShortcut();
 
 signals:

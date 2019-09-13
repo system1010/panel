@@ -1,13 +1,15 @@
 #include <QApplication>
 #include "label.h"
 #include "button.h"
-#include "qobject.h"
 #include <QProcess>
+#include "nativeeventfilter.h"
+#include <QDebug>
 void slotButton1();
 void slotButton2();
 void slotButton3();
 void slotButton4();
 void slotButton5();
+void slotGlobalHotkey();
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -44,22 +46,40 @@ int main(int argc, char *argv[])
     button5.setText("Colobot");
     button5.setGeometry(10,85,80,23);
     QObject::connect(&button5, &button::clicked, slotButton5);
-    qobject o;
-    QProcess process;
-    process.startDetached("tinywm");
+    //rocess process;
+    //ocess.startDetached("tinywm");
+    NativeEventFilter *nativeEventFilter = new NativeEventFilter;    // Инициализируем фильтр
+    a.installNativeEventFilter(nativeEventFilter);  // Устанавилваем его на приложение
+    // подключаем сигнал фильтра к слоту
+    QObject::connect(nativeEventFilter, &NativeEventFilter::activated, slotGlobalHotkey);
+    nativeEventFilter->setShortcut();   // Устанавилваем хоткей
+    nativeEventFilter->setShortcut1();   // Устанавилваем хоткей
     return a.exec();
 
 }
 
+void slotGlobalHotkey()
+{
+    // И сообщаем пользователю, если он нажал нужный нам HotKey
+    QProcess process;
+    process.startDetached("xterm");
+    qDebug() << "test";
+}
+
+
+
+
+
+
 void slotButton1()
 {
     QProcess process;
-    process.startDetached("quicknanobrowser");
+    process.startDetached("xterm -geometry 0x0-0+0 -e panel1");
 }
 void slotButton2()
 {
     QProcess process;
-    process.startDetached("minimal-term -geometry 400x500-1+1");
+    process.startDetached("xterm");
 }
 void slotButton3()
 {
@@ -69,7 +89,8 @@ void slotButton3()
 void slotButton4()
 {
     QProcess process;
-    process.startDetached("init 0");
+    process.start("init 0");
+    process.waitForFinished();
 }
 void slotButton5(){
     QProcess process;

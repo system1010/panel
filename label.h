@@ -2,7 +2,7 @@
 #define LABEL_H
 #include <QLabel>
 #include <QProcess>
-
+#include <QTime>
 class label : public QLabel
 {
 public:
@@ -17,11 +17,7 @@ protected:
         QString output(process.readAllStandardOutput());
         setText(output);
         }else if (objectName()=="lbl1"){
-        QProcess process1;
-        process1.start("date");
-        process1.waitForFinished();
-        QString output1(process1.readAllStandardOutput());
-        setText(output1);
+        setText(QTime::currentTime().toString("hh:mm:ss"));
         }
      }
 };

@@ -149,6 +149,3 @@ if(ev.type == KeyPress){
 }
 
 
-
-
-#endif // TINYWM_H

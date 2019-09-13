@@ -4,20 +4,26 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <xcb/xcb.h>
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 namespace
 {
     Display * m_display;        // Соединение с сервером X11
     Window m_win;               // Захватываемое окно - в данном случае будет вся система
-    int keycode;                // код клавиши
+    int keycode, keycode1;                // код клавиши
     unsigned int modifier;      // код модификаторов
 
-    /* Вектор дополнительных модификаторов Num Lock, Caps lock
+    /* Вектор дополнительных мfодификаторов Num Lock, Caps lock
      * Они тоже учитываются в X11, поэтому понадобяться все возможные комбинации
      * */
     QVector<quint32> maskModifiers(){
         return QVector<quint32>() << 0 << Mod2Mask << LockMask << (Mod2Mask | LockMask);
+    
     }
+        XWindowAttributes attr;
+	 xcb_button_press_event_t *start;
+	xcb_motion_notify_event_t *motion;        
+
 }
 
 NativeEventFilter::NativeEventFilter(QObject *parent) : QObject(parent)
@@ -44,20 +50,65 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
         xcb_generic_event_t *event = static_cast<xcb_generic_event_t *>(message);
 
         // проверяем, что произошло нажатие клавиши
-        if ((event->response_type & 127) == XCB_KEY_PRESS){
+        //if ((event->response_type & 127) == XCB_KEY_PRESS){
+	if ((event->response_type & 127) == XCB_BUTTON_PRESS){	
+xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_t*>(message);
 
-            // Если так, то кастуем сообщение в событие нажатия клавиши
+    XRaiseWindow(m_display, buttonPressEvent->child);
+     int revert_to; 
+          Time time; 
+     XSetInputFocus(m_display, buttonPressEvent->child, revert_to, time);
+
+
+XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
+start = buttonPressEvent;
+
+	}else if ((event->response_type & 127) == XCB_MOTION_NOTIFY){
+	//	XCB_MOTION_NOTIFY
+
+motion = static_cast<xcb_motion_notify_event_t *>(message);
+int xdiff = motion->root_x - start->root_x;
+int ydiff = motion->root_y - start->root_y;
+
+XMoveResizeWindow(m_display, motion->child,attr.x+ xdiff,attr.y+ydiff,attr.width,attr.height);
+
+
+
+/*
+else if(ev.type == MotionNotify && start.subwindow != None)
+	        {
+int xdiff = ev.xbutton.x_root - start.x_root;
+int ydiff = ev.xbutton.y_root - start.y_root;
+XMoveResizeWindow(dpy, start.subwindow,
+attr.x + (start.button==1 ? xdiff : 0),
+attr.y + (start.button==1 ? ydiff : 0),
+MAX(1, attr.width + (start.button==3 ? xdiff : 0)),
+MAX(1, attr.height + (start.button==3 ? ydiff : 0)));
+*/							          
+
+
+
+
+
+
+
+
+	// Если так, то кастуем сообщение в событие нажатия клавиши
             keyEvent = static_cast<xcb_key_press_event_t *>(message);
 
             // Далее проверям, является ли это событие нужным хоткее
             foreach (quint32 maskMods, maskModifiers()) {
                 if((keyEvent->state == (modifier | maskMods ))
-                        &&  keyEvent->detail == keycode){
-                    emit activated();   // и посылаем сигнал
+                      &&  keyEvent->detail == keycode ||keyEvent->detail==keycode1){
+                    emit activated();   // и посылаем сигналe
                     return true;
-                }
+		}
             }
-        }
+        }else if((event->response_type & 127) == XCB_BUTTON_RELEASE)
+	  start->child = None;
+
+
+
     }
     return false;
 }
@@ -88,11 +139,39 @@ void NativeEventFilter::setShortcut()
     }
 }
 
+void NativeEventFilter::setShortcut1()
+{
+    //unsetShortcut();        /* Вначале для перестраховки отключим предполагаемый хоткей,
+     //                        * даже несмотря на то, что будет мусор в первый раз в параметрах хоткея.
+       //                      * */
+
+    // получим код клавиши из KeySym определения и соединения с сервером X11
+    keycode1 = XKeysymToKeycode(m_display, XK_Q);
+    modifier = ControlMask; // Зададим модификатор
+
+    /* А теперь пройдемся по всем возможным комбинациям с учётом Num Lock и Caps Lock
+     * устанавливая хоткеи
+     * */
+    foreach (quint32 maskMods, maskModifiers()) {
+        XGrabKey(m_display,         // указываем соединение с X11
+                   keycode1 ,          // код клавиши
+                   modifier | maskMods,   // модификатор со всеми возможными масками
+                   m_win,             // Захватываемое окно
+                   True,              // Является ли приложение владельцем события. в данном примере не принципиально.
+                   GrabModeAsync,     // Обязательно Ассинхронный режим обработки, иначе, рискуете встрять
+                   GrabModeAsync);    // с замороженной системой, не реагирующей ни на какие воздействия, если
+                                    // заранее не напишите корректную передачу события обратно в систему,
+                                    // а скорее всего так и будет
+     XGrabButton(m_display, 1, Mod1Mask, m_win, True, ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
+	XGrabButton(m_display, 3, Mod1Mask, m_win, True, ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
+    }
+}
+
 void NativeEventFilter::unsetShortcut()
 {
     // Проходим по всем возможным комбинациям и удаляем хоткей
     foreach (quint32 maskMods, maskModifiers()) {
-        XUngrabKey(m_display,
+       XUngrabKey(m_display,
                    keycode,
                    modifier | maskMods,
                    m_win);

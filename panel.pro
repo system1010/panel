@@ -33,19 +33,16 @@ SOURCES += \
         main.cpp \
     label.cpp \
     button.cpp \
-    qobject.cpp \
     nativeeventfilter.cpp
 
 HEADERS += \
     label.h \
     button.h \
-    qobject.h \
     nativeeventfilter.h
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#nx: target.path = /tmp/$${TARGET}/bin
+#lse: unix:!android: target.path = /opt/$${TARGET}/bin
+#isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    tinywm
+DISTFILES +=
