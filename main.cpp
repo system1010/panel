@@ -84,7 +84,7 @@ void slotButton2()
 void slotButton3()
 {
     QProcess process;
-    process.startDetached("/opt/Qt5.9.8/Tools/QtCreator/bin/qtcreator");
+    process.startDetached("/opt/Qt5.13.0/Tools/QtCreator/bin/qtcreator");
 }
 void slotButton4()
 {
