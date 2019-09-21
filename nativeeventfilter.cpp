@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "nativeeventfilter.h"
 #include <QVector>
 #include <QX11Info>
@@ -53,8 +55,7 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
         //if ((event->response_type & 127) == XCB_KEY_PRESS){
 	if ((event->response_type & 127) == XCB_BUTTON_PRESS){	
 xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_t*>(message);
-
-    XRaiseWindow(m_display, buttonPressEvent->child);
+   XRaiseWindow(m_display, buttonPressEvent->child);
      int revert_to; 
           Time time; 
      XSetInputFocus(m_display, buttonPressEvent->child, revert_to, time);
@@ -62,7 +63,7 @@ xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_
 
 XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
 start = buttonPressEvent;
-
+qDebug() << "state " + start->state;
 	}else if ((event->response_type & 127) == XCB_MOTION_NOTIFY){
 	//	XCB_MOTION_NOTIFY
 
@@ -70,8 +71,7 @@ motion = static_cast<xcb_motion_notify_event_t *>(message);
 int xdiff = motion->root_x - start->root_x;
 int ydiff = motion->root_y - start->root_y;
 
-XMoveResizeWindow(m_display, motion->child,attr.x+ xdiff,attr.y+ydiff,attr.width,attr.height);
-
+	XMoveResizeWindow(m_display, motion->child,attr.x+(start->state==8 ? xdiff : 0),attr.y+ (start->state=8 ? ydiff : 0),attr.width,attr.height);
 
 
 /*
@@ -84,6 +84,9 @@ attr.x + (start.button==1 ? xdiff : 0),
 attr.y + (start.button==1 ? ydiff : 0),
 MAX(1, attr.width + (start.button==3 ? xdiff : 0)),
 MAX(1, attr.height + (start.button==3 ? ydiff : 0)));
+8
+1032
+264
 */							          
 
 
