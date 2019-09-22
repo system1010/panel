@@ -45,7 +45,7 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
      * легкий синтаксис Xlib для установки хоткеев нам никто не запрещает
      * */
     xcb_key_press_event_t *keyEvent = 0;
-
+    start = 0;
     // Итак проверяем, что это было xcb событие
     if (eventType == "xcb_generic_event_t") {
         // кастуем сообщение собственно в xcb событие
