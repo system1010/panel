@@ -64,7 +64,6 @@ xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_
 XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
 start = buttonPressEvent;
 //qDebug() << start->state;
-	}
 	if ((event->response_type & 127) == XCB_MOTION_NOTIFY){
 	//	XCB_MOTION_NOTIFY
 
@@ -93,7 +92,7 @@ MAX(1, attr.height + (start.button==3 ? ydiff : 0)));
 264
 */							          
 
-
+}
 
 
 
