@@ -75,7 +75,7 @@ int ydiff = motion->root_y - start->root_y;
 qDebug() << motion->state;
 
 
-	XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),attr.width,attr.height);
+    XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
 
 
 /*
