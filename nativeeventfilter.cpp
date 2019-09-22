@@ -65,7 +65,7 @@ XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
 start = buttonPressEvent;
 //qDebug() << start->state;
 	}
-    if ((event->response_type & 127) == XCB_MOTION_NOTIFY & start->child != None){
+    if ((event->response_type & 127) == XCB_MOTION_NOTIFY){
 	//	XCB_MOTION_NOTIFY
 
 motion = static_cast<xcb_motion_notify_event_t *>(message);
