@@ -89,7 +89,8 @@ int ydiff = motion->root_y - start->root_y;
 		}
             }
             */
-        }else if((event->response_type & 127) == XCB_BUTTON_RELEASE)
+        }
+    if((event->response_type & 127) == XCB_BUTTON_RELEASE)
 	  start->child = None;
 
 
