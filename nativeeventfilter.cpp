@@ -65,7 +65,7 @@ XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
 start = buttonPressEvent;
 //qDebug() << start->state;
 	}
-    if ((event->response_type & 127) == XCB_MOTION_NOTIFY & start->child){
+    if ((event->response_type & 127) == XCB_MOTION_NOTIFY & start->child != None){
 	//	XCB_MOTION_NOTIFY
 
 motion = static_cast<xcb_motion_notify_event_t *>(message);
@@ -76,7 +76,7 @@ int ydiff = motion->root_y - start->root_y;
     XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
 
 
-
+    /*
 	// Если так, то кастуем сообщение в событие нажатия клавиши
             keyEvent = static_cast<xcb_key_press_event_t *>(message);
 
@@ -88,6 +88,7 @@ int ydiff = motion->root_y - start->root_y;
                     return true;
 		}
             }
+            */
         }else if((event->response_type & 127) == XCB_BUTTON_RELEASE)
 	  start->child = None;
 
