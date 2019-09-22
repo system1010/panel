@@ -65,38 +65,15 @@ XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
 start = buttonPressEvent;
 //qDebug() << start->state;
 	}
-	if ((event->response_type & 127) == XCB_MOTION_NOTIFY){
+    if ((event->response_type & 127) == XCB_MOTION_NOTIFY & start->child){
 	//	XCB_MOTION_NOTIFY
 
 motion = static_cast<xcb_motion_notify_event_t *>(message);
 int xdiff = motion->root_x - start->root_x;
 int ydiff = motion->root_y - start->root_y;
 
-qDebug() << motion->state;
-
 
     XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
-
-
-/*
-else if(ev.type == MotionNotify && start.subwindow != None)
-	        {
-int xdiff = ev.xbutton.x_root - start.x_root;
-int ydiff = ev.xbutton.y_root - start.y_root;
-XMoveResizeWindow(dpy, start.subwindow,
-attr.x + (start.button==1 ? xdiff : 0),
-attr.y + (start.button==1 ? ydiff : 0),
-MAX(1, attr.width + (start.button==3 ? xdiff : 0)),
-MAX(1, attr.height + (start.button==3 ? ydiff : 0)));
-8
-1032
-264
-*/							          
-
-
-
-
-
 
 
 
