@@ -48,13 +48,13 @@ int main(int argc, char *argv[])
     button5.setText("Colobot");
     button5.setGeometry(10,85,80,23);
     button button6;
-    QMenu *menu= new QMenu;
-    button6.setMenu(menu);
-    menu->show();
+    QMenu menu;
+    button6.setMenu(&menu);
+    menu.show();
     button6.show();
     button6.setText("Apps");
     button6.setGeometry(10,135,80,23);
-    QObject::connect(&button6, &button::clicked, slotButton6);
+    //QObject::connect(&button6, &button::clicked, slotButton6);
     button6.menu()->addAction("test");
 
     //rocess process;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     QObject::connect(nativeEventFilter, &NativeEventFilter::activated, slotGlobalHotkey);
     nativeEventFilter->setShortcut();   // Устанавилваем хоткей
     nativeEventFilter->setShortcut1();   // Устанавилваем хоткей
-    //QObject::connect(menu, SIGNAL(triggered(QAction*)), a, SLOT(mySlot(QAction*)));
+    QObject::connect(&menu, &QMenu::triggered, slotButton6);
     return a.exec();
 
 }
@@ -79,9 +79,6 @@ void slotGlobalHotkey()
     process.startDetached("xterm");
     qDebug() << "test";
 }
-
-
-
 
 
 
@@ -114,3 +111,4 @@ void slotButton6(){
     QProcess process;
     process.startDetached("colobot");
 }
+
