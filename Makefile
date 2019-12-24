@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = panel1.0.0
-DISTDIR = /media/sda3/root/panel/.tmp/panel1.0.0
+DISTDIR = /media/sda3/root/c/panel/.tmp/panel1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/opt/Qt5.13.0/5.13.0/gcc_64/lib -Wl,-rpath-link,/opt/Qt5.13.0/5.13.0/gcc_64/lib
 LIBS          = $(SUBLIBS) -lX11 /opt/Qt5.13.0/5.13.0/gcc_64/lib/libQt5X11Extras.so /opt/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Widgets.so /opt/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Gui.so /opt/Qt5.13.0/5.13.0/gcc_64/lib/libQt5Core.so -lGL -lpthread   
@@ -732,7 +732,7 @@ moc_nativeeventfilter.cpp: nativeeventfilter.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		moc_predefs.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/bin/moc
-	/opt/Qt5.13.0/5.13.0/gcc_64/bin/moc $(DEFINES) --include /media/sda3/root/panel/moc_predefs.h -I/opt/Qt5.13.0/5.13.0/gcc_64/mkspecs/linux-g++ -I/media/sda3/root/panel -I/opt/Qt5.13.0/5.13.0/gcc_64/include -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtX11Extras -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtWidgets -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtGui -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore -I/usr/include/c++/9.0.1 -I/usr/include/c++/9.0.1/x86_64-pc-linux-gnu -I/usr/include/c++/9.0.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/9.0.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/9.0.1/include-fixed -I/usr/include nativeeventfilter.h -o moc_nativeeventfilter.cpp
+	/opt/Qt5.13.0/5.13.0/gcc_64/bin/moc $(DEFINES) --include /media/sda3/root/c/panel/moc_predefs.h -I/opt/Qt5.13.0/5.13.0/gcc_64/mkspecs/linux-g++ -I/media/sda3/root/c/panel -I/opt/Qt5.13.0/5.13.0/gcc_64/include -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtX11Extras -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtWidgets -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtGui -I/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore -I/usr/include/c++/9.0.1 -I/usr/include/c++/9.0.1/x86_64-pc-linux-gnu -I/usr/include/c++/9.0.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/9.0.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/9.0.1/include-fixed -I/usr/include nativeeventfilter.h -o moc_nativeeventfilter.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1100,11 +1100,9 @@ button.o: button.cpp button.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtGui/qtouchdevice.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o button.cpp
 
-nativeeventfilter.o: nativeeventfilter.cpp nativeeventfilter.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/QObject \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobject.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobjectdefs.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qnamespace.h \
+nativeeventfilter.o: nativeeventfilter.cpp /opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qalgorithms.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qglobal.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qconfig.h \
@@ -1126,20 +1124,20 @@ nativeeventfilter.o: nativeeventfilter.cpp nativeeventfilter.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qmutex.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qnumeric.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qversiontagging.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qhash.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qchar.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qlist.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qrefcount.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qnamespace.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringliteral.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringalgorithms.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringview.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringbuilder.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qlist.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qalgorithms.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qiterator.h \
-		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qhashfunctions.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qpair.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qvector.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qpoint.h \
@@ -1147,12 +1145,27 @@ nativeeventfilter.o: nativeeventfilter.cpp nativeeventfilter.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringlist.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qregexp.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qcoreevent.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qscopedpointer.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qmetatype.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qvarlengtharray.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qcontainerfwd.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qset.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qsharedpointer.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		nativeeventfilter.h \
+		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/QAbstractNativeEventFilter \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		/opt/Qt5.13.0/5.13.0/gcc_64/include/QtCore/QVector \

@@ -4,11 +4,13 @@
 #include <QProcess>
 #include "nativeeventfilter.h"
 #include <QDebug>
+#include <QMenu>
 void slotButton1();
 void slotButton2();
 void slotButton3();
 void slotButton4();
 void slotButton5();
+void slotButton6();
 void slotGlobalHotkey();
 int main(int argc, char *argv[])
 {
@@ -45,7 +47,16 @@ int main(int argc, char *argv[])
     button5.show();
     button5.setText("Colobot");
     button5.setGeometry(10,85,80,23);
-    QObject::connect(&button5, &button::clicked, slotButton5);
+    button button6;
+    QMenu *menu= new QMenu;
+    button6.setMenu(menu);
+    menu->show();
+    button6.show();
+    button6.setText("Apps");
+    button6.setGeometry(10,135,80,23);
+    QObject::connect(&button6, &button::clicked, slotButton6);
+    button6.menu()->addAction("test");
+
     //rocess process;
     //ocess.startDetached("tinywm");
     NativeEventFilter *nativeEventFilter = new NativeEventFilter;    // Инициализируем фильтр
@@ -54,9 +65,12 @@ int main(int argc, char *argv[])
     QObject::connect(nativeEventFilter, &NativeEventFilter::activated, slotGlobalHotkey);
     nativeEventFilter->setShortcut();   // Устанавилваем хоткей
     nativeEventFilter->setShortcut1();   // Устанавилваем хоткей
+    //QObject::connect(menu, SIGNAL(triggered(QAction*)), a, SLOT(mySlot(QAction*)));
     return a.exec();
 
 }
+
+
 
 void slotGlobalHotkey()
 {
@@ -74,7 +88,7 @@ void slotGlobalHotkey()
 void slotButton1()
 {
     QProcess process;
-    process.startDetached("xterm -geometry 0x0-0+0 -e panel1");
+    process.startDetached("WebEngine --no-sandbox");
 }
 void slotButton2()
 {
@@ -93,6 +107,10 @@ void slotButton4()
     process.waitForFinished();
 }
 void slotButton5(){
+    QProcess process;
+    process.startDetached("colobot");
+}
+void slotButton6(){
     QProcess process;
     process.startDetached("colobot");
 }
