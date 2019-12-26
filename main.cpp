@@ -27,26 +27,32 @@ int main(int argc, char *argv[])
     button1.show();
     button1.setText("Browser");
     button1.setGeometry(10,10,80,23);
-    QObject::connect(&button1, &button::clicked, slotButton1);
+    QObject::connect(&button1, &button::clicked, []{QProcess process;
+        process.startDetached("WebEngine --no-sandbox");});
     button button2;
     button2.show();
     button2.setText("Terminal");
     button2.setGeometry(10,35,80,23);
-    QObject::connect(&button2, &button::clicked, slotButton2);
+    QObject::connect(&button2, &button::clicked, []{QProcess process; process.startDetached("xterm");});
     button button3;
     button3.show();
     button3.setText("QtCreator");
     button3.setGeometry(10,60,80,23);
-    QObject::connect(&button3, &button::clicked, slotButton3);
+    QObject::connect(&button3, &button::clicked, []{QProcess process;
+        process.startDetached("/opt/Qt5.13.0/Tools/QtCreator/bin/qtcreator");});
     button button4;
     button4.show();
     button4.setText("Off");
     button4.setGeometry(10,110,80,23);
-    QObject::connect(&button4, &button::clicked, slotButton4);
+    QObject::connect(&button4, &button::clicked, []{QProcess process;
+        process.start("init 0");
+        process.waitForFinished();});
     button button5;
     button5.show();
     button5.setText("Colobot");
     button5.setGeometry(10,85,80,23);
+    QObject::connect(&button5, &button::clicked, []{QProcess process; process.startDetached("colobot");});
+
     button button6;
     QMenu menu;
     button6.setMenu(&menu);
@@ -65,7 +71,7 @@ int main(int argc, char *argv[])
     QObject::connect(nativeEventFilter, &NativeEventFilter::activated, slotGlobalHotkey);
     nativeEventFilter->setShortcut();   // Устанавилваем хоткей
     nativeEventFilter->setShortcut1();   // Устанавилваем хоткей
-    QObject::connect(&menu, &QMenu::triggered, slotButton6);
+    //QObject::connect(&menu, &QMenu::triggered, slotButton6);
     return a.exec();
 
 }
@@ -81,7 +87,7 @@ void slotGlobalHotkey()
 }
 
 
-
+/*
 void slotButton1()
 {
     QProcess process;
@@ -111,4 +117,4 @@ void slotButton6(){
     QProcess process;
     process.startDetached("colobot");
 }
-
+*/
