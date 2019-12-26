@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QAbstractNativeEventFilter>
-
+#include <QPushButton>
 class NativeEventFilter : public QObject, public QAbstractNativeEventFilter
 {
     Q_OBJECT
@@ -11,6 +11,7 @@ public:
     explicit NativeEventFilter(QObject *parent = nullptr);
 
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
+    QPushButton *but;
     void setShortcut();
     void setShortcut1();
 

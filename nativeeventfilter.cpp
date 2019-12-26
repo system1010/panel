@@ -1,5 +1,5 @@
 #include <QDebug>
-
+#include <QPushButton>
 #include "nativeeventfilter.h"
 #include <QVector>
 #include <QX11Info>
@@ -32,6 +32,14 @@ NativeEventFilter::NativeEventFilter(QObject *parent) : QObject(parent)
 {
     m_display = QX11Info::display();        // Создадим подключение к серверу
     m_win = DefaultRootWindow(m_display);   // и вытащим из него захватываемое окно с помощью макроса
+
+    QPushButton *but = new QPushButton;
+    but->show();
+    but->setText("test");
+    but->setGeometry(100,100,80,23);
+    connect(but, &QPushButton::clicked, this, []{qDebug()<<"test";});
+
+
 }
 
 bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
