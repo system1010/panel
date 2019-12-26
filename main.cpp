@@ -86,35 +86,3 @@ void slotGlobalHotkey()
     qDebug() << "test";
 }
 
-
-/*
-void slotButton1()
-{
-    QProcess process;
-    process.startDetached("WebEngine --no-sandbox");
-}
-void slotButton2()
-{
-    QProcess process;
-    process.startDetached("xterm");
-}
-void slotButton3()
-{
-    QProcess process;
-    process.startDetached("/opt/Qt5.13.0/Tools/QtCreator/bin/qtcreator");
-}
-void slotButton4()
-{
-    QProcess process;
-    process.start("init 0");
-    process.waitForFinished();
-}
-void slotButton5(){
-    QProcess process;
-    process.startDetached("colobot");
-}
-void slotButton6(){
-    QProcess process;
-    process.startDetached("colobot");
-}
-*/
