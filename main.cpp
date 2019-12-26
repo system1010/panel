@@ -5,12 +5,6 @@
 #include "nativeeventfilter.h"
 #include <QDebug>
 #include <QMenu>
-void slotButton1();
-void slotButton2();
-void slotButton3();
-void slotButton4();
-void slotButton5();
-void slotButton6();
 void slotGlobalHotkey();
 int main(int argc, char *argv[])
 {
@@ -28,7 +22,7 @@ int main(int argc, char *argv[])
     button1.setText("Browser");
     button1.setGeometry(10,10,80,23);
     QObject::connect(&button1, &button::clicked, []{QProcess process;
-        process.startDetached("WebEngine --no-sandbox");});
+        process.startDetached("browser --no-sandbox");});
     button button2;
     button2.show();
     button2.setText("Terminal");
