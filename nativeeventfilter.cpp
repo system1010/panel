@@ -1,11 +1,16 @@
 #include <QDebug>
-#include <QPushButton>
+#include "label.h"
+#include "button.h"
 #include "nativeeventfilter.h"
+#include <QDebug>
+#include <QMenu>
 #include <QVector>
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <xcb/xcb.h>
+#include <QGridLayout>
+
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 namespace
@@ -28,21 +33,73 @@ namespace
 
 }
 
-NativeEventFilter::NativeEventFilter(QObject *parent) : QObject(parent)
+NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QWidget (parent)
 {
     m_display = QX11Info::display();        // Создадим подключение к серверу
     m_win = DefaultRootWindow(m_display);   // и вытащим из него захватываемое окно с помощью макроса
 
-    QPushButton *but = new QPushButton;
-    but->show();
-    but->setText("test");
-    but->setGeometry(100,100,80,23);
-    connect(but, &QPushButton::clicked, this, []{qDebug()<<"test";});
 
+    label *lbl=new label;
+    lbl->setObjectName("lbl");
+    //lbl->show();
+    label *lbl1=new label;
+    lbl1->setObjectName("lbl1");
+    //lbl1->show();
+    button *button1 = new button;
+    //button1->show();
+    button1->setText("Browser");
+    connect(button1, &QPushButton::clicked, this, []{ 
+    QProcess process; process.startDetached("browser --no-sandbox");});
+    button *button2 = new button;
+    //button2->show();
+    button2->setText("Terminal");
+    connect(button2, &QPushButton::clicked, this, []{
+    QProcess process; process.startDetached("xterm");});
+    button *button3 = new button;
+    //button3->show();
+    button3->setText("QtCreator");
+    connect(button3, &QPushButton::clicked, this, []{
+    QProcess process; process.startDetached("xterm");});
+    button *button4 = new button;
+    //button4->show();
+    button4->setText("Colobot");
+    connect(button4, &QPushButton::clicked, this, []{
+    QProcess process; process.startDetached("xterm");});
+    button *button5 = new button;
+    //button5->show();
+    button5->setText("Off");
+    connect(button5, &QPushButton::clicked, this, []{
+    QProcess process; process.start("init 0"); process.waitForFinished();});
+    button *button6 = new button;
+    QMenu *menu = new QMenu;
+    button6->setMenu(menu);
+    //menu->show();
+    //button6->show();
+    button6->setText("Apps");
+    button6->menu()->addAction("test");
+    connect(button6, &QPushButton::clicked, this, []{
+    QProcess process; process.start("xterm");});
+
+    QGridLayout *layout = new QGridLayout;
+    layout->addWidget(button1, 0, 0);
+    layout->addWidget(button2, 1, 0);
+    layout->addWidget(button3, 2, 0);
+    layout->addWidget(button4, 3, 0);
+    layout->addWidget(button5, 4, 0);
+    layout->addWidget(button6, 5, 0);
+    layout->addWidget(lbl,6,0);
+    layout->addWidget(lbl1,7,0);
+    setLayout(layout);
+    show();
+
+    connect(this, &NativeEventFilter::activated, this, []{QProcess process; process.startDetached("xterm");qDebug() << "test";});
+
+    setShortcut();  
+    setShortcut1();
 
 }
 
-bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
+bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, qintptr  *result)
 {
     Q_UNUSED(eventType)
     Q_UNUSED(result)
@@ -64,9 +121,9 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
 	if ((event->response_type & 127) == XCB_BUTTON_PRESS){	
 xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_t*>(message);
    XRaiseWindow(m_display, buttonPressEvent->child);
-     int revert_to; 
-          Time time; 
-     XSetInputFocus(m_display, buttonPressEvent->child, revert_to, time);
+    // int revert_to; 
+      //    Time time; 
+     XSetInputFocus(m_display, buttonPressEvent->child, RevertToNone, CurrentTime);
 
 
 XGetWindowAttributes(m_display, buttonPressEvent->child, &attr);
@@ -84,23 +141,33 @@ int ydiff = motion->root_y - start->root_y;
     XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
 
 
-    /*
+  /*  
 	// Если так, то кастуем сообщение в событие нажатия клавиши
             keyEvent = static_cast<xcb_key_press_event_t *>(message);
 
             // Далее проверям, является ли это событие нужным хоткее
             foreach (quint32 maskMods, maskModifiers()) {
-                if((keyEvent->state == (modifier | maskMods ))
-                      &&  keyEvent->detail == keycode ||keyEvent->detail==keycode1){
+                if(keyEvent->state == (modifier | maskMods )
+                      &&  keyEvent->detail == keycode ){
                     emit activated();   // и посылаем сигналe
                     return true;
-		}
-            }
+                    }
+                    }
             */
         }
     if((event->response_type & 127) == XCB_BUTTON_RELEASE)
 	  start->child = None;
 
+           keyEvent = static_cast<xcb_key_press_event_t *>(message);
+
+            foreach (quint32 maskMods, maskModifiers()) {
+                if(keyEvent->state == (modifier | maskMods )
+                      &&  (keyEvent->detail == keycode||keyEvent->detail == keycode1) )    {
+                    emit activated();  
+                   //slotGlobalHotkey();  
+                  return true;
+                }
+            }
 
 
     }
@@ -171,4 +238,3 @@ void NativeEventFilter::unsetShortcut()
                    m_win);
     }
 }
-

@@ -1,17 +1,16 @@
 #ifndef NATIVEEVENTFILTER_H
 #define NATIVEEVENTFILTER_H
 
-#include <QObject>
+//#include <QObject>
+#include <QWidget>
 #include <QAbstractNativeEventFilter>
-#include <QPushButton>
-class NativeEventFilter : public QObject, public QAbstractNativeEventFilter
+class NativeEventFilter : public /*QObject*/QWidget, public QAbstractNativeEventFilter
 {
     Q_OBJECT
 public:
-    explicit NativeEventFilter(QObject *parent = nullptr);
+    explicit NativeEventFilter(/*QObject*/ QWidget *parent = nullptr);
 
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
-    QPushButton *but;
+ virtual bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result);
     void setShortcut();
     void setShortcut1();
 
