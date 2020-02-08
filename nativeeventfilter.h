@@ -10,7 +10,8 @@ class NativeEventFilter : public /*QObject*/QWidget, public QAbstractNativeEvent
 public:
     explicit NativeEventFilter(/*QObject*/ QWidget *parent = nullptr);
 
- virtual bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result);
+ virtual bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr /* long int*/ *result);
+
     void setShortcut();
     void setShortcut1();
 

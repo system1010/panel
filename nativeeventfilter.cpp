@@ -41,41 +41,26 @@ NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QW
 
     label *lbl=new label;
     lbl->setObjectName("lbl");
-    //lbl->show();
     label *lbl1=new label;
     lbl1->setObjectName("lbl1");
-    //lbl1->show();
-    button *button1 = new button;
-    //button1->show();
-    button1->setText("Browser");
+    button *button1 = new button("Browser");
     connect(button1, &QPushButton::clicked, this, []{ 
     QProcess process; process.startDetached("browser --no-sandbox");});
-    button *button2 = new button;
-    //button2->show();
-    button2->setText("Terminal");
+    button *button2 = new button("Terminal");
     connect(button2, &QPushButton::clicked, this, []{
     QProcess process; process.startDetached("xterm");});
-    button *button3 = new button;
-    //button3->show();
-    button3->setText("QtCreator");
+    button *button3 = new button("QtCreator");
     connect(button3, &QPushButton::clicked, this, []{
     QProcess process; process.startDetached("xterm");});
-    button *button4 = new button;
-    //button4->show();
-    button4->setText("Colobot");
+    button *button4 = new button("Colobot");
     connect(button4, &QPushButton::clicked, this, []{
     QProcess process; process.startDetached("xterm");});
-    button *button5 = new button;
-    //button5->show();
-    button5->setText("Off");
+    button *button5 = new button("Off");
     connect(button5, &QPushButton::clicked, this, []{
     QProcess process; process.start("init 0"); process.waitForFinished();});
-    button *button6 = new button;
+    button *button6 = new button("Apps");
     QMenu *menu = new QMenu;
     button6->setMenu(menu);
-    //menu->show();
-    //button6->show();
-    button6->setText("Apps");
     button6->menu()->addAction("test");
     connect(button6, &QPushButton::clicked, this, []{
     QProcess process; process.start("xterm");});
@@ -99,7 +84,7 @@ NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QW
 
 }
 
-bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, qintptr  *result)
+bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, qintptr/* long int*/  *result)
 {
     Q_UNUSED(eventType)
     Q_UNUSED(result)

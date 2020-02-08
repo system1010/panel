@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'nativeeventfilter.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 6.0.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.14.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -13,7 +13,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'nativeeventfilter.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 6.0.0. It"
+#error "This file was generated using the moc from 5.14.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -22,16 +22,19 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_NativeEventFilter_t {
-    const uint offsetsAndSize[6];
+    QByteArrayData data[3];
     char stringdata0[29];
 };
-#define QT_MOC_LITERAL(ofs, len) \
-    uint(offsetof(qt_meta_stringdata_NativeEventFilter_t, stringdata0) + ofs), len 
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_NativeEventFilter_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
 static const qt_meta_stringdata_NativeEventFilter_t qt_meta_stringdata_NativeEventFilter = {
     {
-QT_MOC_LITERAL(0, 17), // "NativeEventFilter"
-QT_MOC_LITERAL(18, 9), // "activated"
-QT_MOC_LITERAL(28, 0) // ""
+QT_MOC_LITERAL(0, 0, 17), // "NativeEventFilter"
+QT_MOC_LITERAL(1, 18, 9), // "activated"
+QT_MOC_LITERAL(2, 28, 0) // ""
 
     },
     "NativeEventFilter\0activated\0"
@@ -83,8 +86,8 @@ void NativeEventFilter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
 }
 
 QT_INIT_METAOBJECT const QMetaObject NativeEventFilter::staticMetaObject = { {
-    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
-    qt_meta_stringdata_NativeEventFilter.offsetsAndSize,
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_NativeEventFilter.data,
     qt_meta_data_NativeEventFilter,
     qt_static_metacall,
     nullptr,
@@ -104,12 +107,12 @@ void *NativeEventFilter::qt_metacast(const char *_clname)
         return static_cast<void*>(this);
     if (!strcmp(_clname, "QAbstractNativeEventFilter"))
         return static_cast< QAbstractNativeEventFilter*>(this);
-    return QWidget::qt_metacast(_clname);
+    return QObject::qt_metacast(_clname);
 }
 
 int NativeEventFilter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QWidget::qt_metacall(_c, _id, _a);
+    _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

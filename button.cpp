@@ -1,6 +1,6 @@
 #include "button.h"
 
-button::button()
+button::button(QString text)
 {
-
+this->setText(text);
 }

@@ -5,7 +5,7 @@
 class button : public QPushButton
 {
 public:
-    button();
+    button(QString text);
 };
 
 #endif // BUTTON_H
