@@ -10,9 +10,7 @@
 #include <X11/Xutil.h>
 #include <xcb/xcb.h>
 #include <QGridLayout>
-
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
-
 namespace
 {
     Display * m_display;        // Соединение с сервером X11
@@ -41,21 +39,29 @@ NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QW
 
     label *lbl=new label;
     lbl->setObjectName("lbl");
+    //lbl->setStyleSheet("border-image:url(/media/sda3/usr/bin/battery-charged-icon.png)");
+    lbl->setFixedSize(80,50);
     label *lbl1=new label;
     lbl1->setObjectName("lbl1");
     button *button1 = new button("Browser");
+    button1->setStyleSheet("border-image:url(/media/sda3/usr/bin/intetnet.png);");
+    button1->setFixedSize(80,50);
     connect(button1, &QPushButton::clicked, this, []{ 
     QProcess process; process.startDetached("browser --no-sandbox");});
     button *button2 = new button("Terminal");
+    button2->setStyleSheet("border-image:url(/media/sda3/usr/bin/terminal-icon.png)");
+    button2->setFixedSize(80,50);
     connect(button2, &QPushButton::clicked, this, []{
-    QProcess process; process.startDetached("xterm");});
+    QProcess process; process.startDetached("st");});
     button *button3 = new button("QtCreator");
     connect(button3, &QPushButton::clicked, this, []{
-    QProcess process; process.startDetached("xterm");});
-    button *button4 = new button("Colobot");
+    QProcess process; process.startDetached("browser1 --no-sandbox");});
+    button *button4 = new button("Dev-Tool");
     connect(button4, &QPushButton::clicked, this, []{
-    QProcess process; process.startDetached("xterm");});
+    QProcess process; process.startDetached("st -geometry 80x66+0+0");});
     button *button5 = new button("Off");
+    button5->setStyleSheet("border-image:url(/media/sda3/usr/bin/Windows-Turn-Off-icon.png)");
+    button5->setFixedSize(80,50);
     connect(button5, &QPushButton::clicked, this, []{
     QProcess process; process.start("init 0"); process.waitForFinished();});
     button *button6 = new button("Apps");
@@ -70,14 +76,16 @@ NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QW
     layout->addWidget(button2, 1, 0);
     layout->addWidget(button3, 2, 0);
     layout->addWidget(button4, 3, 0);
-    layout->addWidget(button5, 4, 0);
-    layout->addWidget(button6, 5, 0);
+    layout->addWidget(button6, 4, 0);
+    layout->addWidget(button5, 5, 0);
     layout->addWidget(lbl,6,0);
     layout->addWidget(lbl1,7,0);
     setLayout(layout);
     show();
 
-    connect(this, &NativeEventFilter::activated, this, []{QProcess process; process.startDetached("xterm");qDebug() << "test";});
+    connect(this, &NativeEventFilter::activated, this, []{QProcess process; process.startDetached("xalttab");qDebug() << "test";});
+
+//QApplication::instance()->installNativeEventFilter(new NativeEventFilter);
 
     setShortcut();  
     setShortcut1();
@@ -86,8 +94,8 @@ NativeEventFilter::NativeEventFilter(/*QObject*/QWidget *parent) : /*QObject*/QW
 
 bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, qintptr/* long int*/  *result)
 {
-    Q_UNUSED(eventType)
-    Q_UNUSED(result)
+  Q_UNUSED(eventType)
+  Q_UNUSED(result)
 
     /* В вот обработка события строится уже на библиотеке XCB вместо Xlib.
      * Вроде как, получая событие Qt знает его в качестве XCB события,
@@ -105,7 +113,12 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
         //if ((event->response_type & 127) == XCB_KEY_PRESS){
 	if ((event->response_type & 127) == XCB_BUTTON_PRESS){	
 xcb_button_press_event_t* buttonPressEvent = static_cast<xcb_button_press_event_t*>(message);
-   XRaiseWindow(m_display, buttonPressEvent->child);
+   
+
+
+
+                   
+                   XRaiseWindow(m_display, buttonPressEvent->child);
     // int revert_to; 
       //    Time time; 
      XSetInputFocus(m_display, buttonPressEvent->child, RevertToNone, CurrentTime);
@@ -121,11 +134,22 @@ start = buttonPressEvent;
 motion = static_cast<xcb_motion_notify_event_t *>(message);
 int xdiff = motion->root_x - start->root_x;
 int ydiff = motion->root_y - start->root_y;
+//if(xdiff>50)xdiff=100;
+//if(ydiff>50)ydiff=100;
+    
+
+if(motion->state==264)XMoveWindow(m_display, motion->child,attr.x+xdiff,attr.y+ydiff);
+
+if(motion->state==1032)XResizeWindow(m_display, motion->child,MAX(1, attr.width +  xdiff),MAX(1, attr.height +  ydiff));
+
+//XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
 
 
-    XMoveResizeWindow(m_display, motion->child,attr.x+(motion->state==264 ? xdiff : 0),attr.y+(motion->state==264 ? ydiff : 0),MAX(1, attr.width + (motion->state==1032 ? xdiff : 0)),MAX(1, attr.height + (motion->state==1032 ? ydiff : 0)));
 
-
+/* 
+if((event->response_type & 127) == XCB_BUTTON_RELEASE)
+          start->child = None;
+*/
   /*  
 	// Если так, то кастуем сообщение в событие нажатия клавиши
             keyEvent = static_cast<xcb_key_press_event_t *>(message);
@@ -138,23 +162,24 @@ int ydiff = motion->root_y - start->root_y;
                     return true;
                     }
                     }
-            */
-        }
+                      
+ */      
+}
     if((event->response_type & 127) == XCB_BUTTON_RELEASE)
 	  start->child = None;
-
-           keyEvent = static_cast<xcb_key_press_event_t *>(message);
-
-            foreach (quint32 maskMods, maskModifiers()) {
+           
+        keyEvent = static_cast<xcb_key_press_event_t *>(message);
+           
+           foreach (quint32 maskMods, maskModifiers()) {
                 if(keyEvent->state == (modifier | maskMods )
-                      &&  (keyEvent->detail == keycode||keyEvent->detail == keycode1) )    {
+                      &&  (keyEvent->detail == keycode) )    {
                     emit activated();  
                    //slotGlobalHotkey();  
                   return true;
                 }
             }
 
-
+         
     }
     return false;
 }
@@ -166,7 +191,7 @@ void NativeEventFilter::setShortcut()
                              * */
 
     // получим код клавиши из KeySym определения и соединения с сервером X11
-    keycode = XKeysymToKeycode(m_display, XK_E);
+    keycode = XKeysymToKeycode(m_display, XK_Tab);
     modifier = ControlMask; // Зададим модификатор
 
     /* А теперь пройдемся по всем возможным комбинациям с учётом Num Lock и Caps Lock
